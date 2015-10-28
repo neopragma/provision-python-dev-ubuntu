@@ -1,16 +1,17 @@
 #!/bin/bash
 #======================================================================================
-# Configure an instance of Ubuntu Linux to support Java development training courses.
+# Configure an instance of Ubuntu Linux to support Python development.
 #
 # Arguments:
 # (None)		
 #
-# Version: 1.2.0
-# Date: 14 Aug 2014
+# Version: 1.0.0
+# Date: 28 Oct 2015
 # Author: Dave Nicolette
 #======================================================================================
-export INSTALL_DIR="$HOME/provision-java-dev-ubuntu"
+export INSTALL_DIR="$HOME/provision-python-dev-ubuntu"
 export COMMON_DIR="provision-ubuntu-common"
+export RESOURCES="."
 
 git clone "git://github.com/neopragma/$COMMON_DIR"
 
@@ -21,46 +22,29 @@ git clone "git://github.com/neopragma/$COMMON_DIR"
 
 echo
 echo '============================================================='
-echo 'Installing Microsoft TrueType fonts...'
+echo 'Installing pip...'
 
-"./$COMMON_DIR/install_mscorefonts"
+sudo apt-get -y install python-pip
 
+# Set the Firefox bookmarks
+
+pushd "$HOME/.mozilla/firefox"
+PROFILEDIR=$(grep -n Path profiles.ini | cut -d '=' -f 2)
+cd $PROFILEDIR
+cp places.sqlite places-sqlite.orig
 echo
 echo '============================================================='
-echo 'Installing Java Development Kit...'
-
-"./$COMMON_DIR/install_java8"
-
-echo
-echo '============================================================='
-echo 'Installing Maven...'
-
-"./$COMMON_DIR/install_maven"
-
-# =============================================================
-# Installing Eclipse...
-
-"./$COMMON_DIR/install_eclipse_kepler"
-
-echo
-echo '============================================================='
-echo 'Installing Ruby...'
-
-"./$COMMON_DIR/install_ruby"
-
-echo
-echo '============================================================='
-echo 'Installing ArgoUML...'
-
-"./$COMMON_DIR/install_argouml"
-
+echo 'Setting Firefox bookmarks...'
+echo "Copying places.sqlite from $RESOURCES to $(pwd)"
+cp "$RESOURCES/places.sqlite" .
+popd
 echo
 echo '============================================================='
 echo 'Setting the desktop background image...'
 
 mkdir -p "$HOME/.backgrounds"
-cp -f java-background.png "$HOME/.backgrounds/."
-gsettings set org.gnome.desktop.background picture-uri file:///home/neopragma/.backgrounds/java-background.png
+cp -f python-background.png "$HOME/.backgrounds/."
+gsettings set org.gnome.desktop.background picture-uri file:///home/pythondev/.backgrounds/python-background.png
 
 ./verify
 
