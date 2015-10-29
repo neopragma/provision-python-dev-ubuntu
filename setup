@@ -11,7 +11,7 @@
 #======================================================================================
 export INSTALL_DIR="$HOME/provision-python-dev-ubuntu"
 export COMMON_DIR="provision-ubuntu-common"
-export RESOURCES="."
+export RESOURCES="./"
 
 git clone "git://github.com/neopragma/$COMMON_DIR"
 
@@ -36,14 +36,15 @@ echo
 echo '============================================================='
 echo 'Setting Firefox bookmarks...'
 echo "Copying places.sqlite from $RESOURCES to $(pwd)"
-cp "$RESOURCES/places.sqlite" .
+cp "$INSTALL_DIR/places.sqlite" .
 popd
+
 echo
 echo '============================================================='
 echo 'Setting the desktop background image...'
 
 mkdir -p "$HOME/.backgrounds"
-cp -f python-background.png "$HOME/.backgrounds/."
+cp -f "$INSTALL_DIR/python-background.png" "$HOME/.backgrounds/."
 gsettings set org.gnome.desktop.background picture-uri file:///home/pythondev/.backgrounds/python-background.png
 
 ./verify
